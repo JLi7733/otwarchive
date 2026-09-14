@@ -5,6 +5,10 @@ class ProfileController < ApplicationController
 
   def show
     @user = User.find_by(login: params[:user_id])
+    if @user.profile.nil?
+      Profile.create(user_id: @user.id)
+      @user.reload
+    end
 
     @profile = @user.profile
 
