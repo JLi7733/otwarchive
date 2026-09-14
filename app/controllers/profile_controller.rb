@@ -5,10 +5,6 @@ class ProfileController < ApplicationController
 
   def show
     @user = User.find_by(login: params[:user_id])
-    if @user.profile.nil?
-      Profile.create(user_id: @user.id)
-      @user.reload
-    end
 
     @profile = @user.profile
 
@@ -58,8 +54,7 @@ class ProfileController < ApplicationController
     @check_ownership_of = @user
 
     if @user.nil?
-      flash[:error] = ts("Sorry, there's no user by that name.")
-      redirect_to root_path
+      render template: "errors/404", status: :not_found
       return
     end
 
