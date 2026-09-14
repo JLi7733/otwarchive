@@ -6,7 +6,13 @@ class StatsController < ApplicationController
 
   # only the current user
   def load_user
-    @user = current_user
+    @user = User.find_by(login: params[:user_id])
+
+    if @user.nil?
+      render template: "errors/404", status: :not_found
+      return
+    end
+
     @check_ownership_of = @user
   end
 
